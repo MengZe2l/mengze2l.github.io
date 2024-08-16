@@ -1,0 +1,1 @@
+import{_ as a,c as o,o as t,a2 as l}from"./chunks/framework.CbocFKz0.js";const p=JSON.parse('{"title":"服务器简介","description":"","frontmatter":{},"headers":[],"relativePath":"play-doc.md","filePath":"play-doc.md"}'),r={name:"play-doc.md"},e=l("",15),i=[e];function n(s,c,d,h,g,u){return t(),o("div",null,i)}const f=a(r,[["render",n]]);export{p as __pageData,f as default};
