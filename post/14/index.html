@@ -1,0 +1,848 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>Docker安装MySQL及MySQL学习 - 云深幽居处</title>
+
+  
+    <meta name="description" content="Docker是一个开源的容器化管理平台，可以方便部署各种WEB&#x2F;APP应用依赖环境，很多人用它来部署MySQL数据库管理。 安装Docker在此之前需要安装Docker容器，这里不多说了，可以去菜鸟教程根据教程安装Docker 拉取MySQL镜像部署好Docker之后要开始拉取MySQL的镜像文件，前往Docker输入以下命令： 1docker pull mysql 这会从Docker拉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker安装MySQL及MySQL学习">
+<meta property="og:url" content="https://www.mengze2.cn/post/14/index.html">
+<meta property="og:site_name" content="云深幽居处">
+<meta property="og:description" content="Docker是一个开源的容器化管理平台，可以方便部署各种WEB&#x2F;APP应用依赖环境，很多人用它来部署MySQL数据库管理。 安装Docker在此之前需要安装Docker容器，这里不多说了，可以去菜鸟教程根据教程安装Docker 拉取MySQL镜像部署好Docker之后要开始拉取MySQL的镜像文件，前往Docker输入以下命令： 1docker pull mysql 这会从Docker拉">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-31T04:03:40.000Z">
+<meta property="article:modified_time" content="2024-09-15T11:35:01.450Z">
+<meta property="article:author" content="MengZe2">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="DLL">
+<meta property="article:tag" content="DML">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="docker,MySQL,DLL,DML">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/Image_1724925259494.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">云深幽居处</div><div class="sub cap">万物皆有裂痕，那是光进来的地方</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="友情链接" href="/links" style="color:#1BCDFC">友链</a><a class="nav-item" title="关于博主" href="/about" style="color:#3DC550">关于</a><a class="nav-item" title="免责声明" href="/privacy-policy" style="color:#FA6400">声明</a><a class="nav-item" title="每日早报" href="/newspaper" style="color:#F44336">早报</a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/1/"><span class="title">使用VPS架设Minecraft服务器</span></a><a class="item title" href="/post/10/"><span class="title">给Hexo博客安排上Github Action自动化部署</span></a><a class="item title" href="/post/11/"><span class="title">梦泽带你重温PHP基本-变量</span></a><a class="item title" href="/post/12/"><span class="title">用PHP和AES-265算法写了一个文本加解密工具</span></a><a class="item title" href="/post/13/"><span class="title">Typecho插件开发实例及教程</span></a><a class="item title" href="/post/14/"><span class="title">Docker安装MySQL及MySQL学习</span></a><a class="item title" href="/post/15/"><span class="title">近况-2024/09/02</span></a><a class="item title" href="/post/16/"><span class="title">慢，是一种生活节奏</span></a><a class="item title" href="/post/17/"><span class="title">详细解析一下Pjax的原理</span></a><a class="item title" href="/post/18/"><span class="title">Awk文本/数据处理语言学习笔记</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/MengZe2l" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"/></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"/></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"/></a><a class="social" href="https://waline.mengze2.cn" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"/></a><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div><div id="tag"> <span>&nbsp标签：</span><a class="cap breadcrumb-link" href="/tags/DLL/">DLL</a>&nbsp; <a class="cap breadcrumb-link" href="/tags/DML/">DML</a>&nbsp; <a class="cap breadcrumb-link" href="/tags/MySQL/">MySQL</a>&nbsp; <a class="cap breadcrumb-link" href="/tags/docker/">docker</a>&nbsp</div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-08-31T04:03:40.000Z">2024-08-31</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-09-15T11:35:01.450Z">2024-09-15</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Docker安装MySQL及MySQL学习</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><hr/><article class="md-text content"><p>Docker是一个开源的容器化管理平台，可以方便部署各种WEB&#x2F;APP应用依赖环境，很多人用它来部署MySQL数据库管理。</p>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>在此之前需要安装Docker容器，这里不多说了，可以去<a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-tutorial.html">菜鸟教程</a>根据教程安装Docker</p>
+<h2 id="拉取MySQL镜像"><a href="#拉取MySQL镜像" class="headerlink" title="拉取MySQL镜像"></a>拉取MySQL镜像</h2><p>部署好Docker之后要开始拉取MySQL的镜像文件，前往Docker输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql</span><br></pre></td></tr></table></figure>
+<p>这会从Docker拉取MySQL的镜像，可以使用以下命令查看已拉取的镜像列表</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><p>在拉取完成之后，可以使用命令行启动MySQL的镜像容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest</span><br></pre></td></tr></table></figure>
+<p>这这命令会在后台启动MySQL容器，并将其命名为“some-mysql”。此外，您需要设置MySQL的root密码，以便在后续的步骤中进行访问。</p>
+<h2 id="连接MySQL"><a href="#连接MySQL" class="headerlink" title="连接MySQL"></a>连接MySQL</h2><p>启动容器后，需要连接至MySQL，可以使用docker命令连接MySQL</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it some-mysql mysql -p</span><br></pre></td></tr></table></figure>
+<p>此命令将连接到MySQL容器，并要求您输入root密码。输入您在步骤3中设置的密码即可登录MySQL。</p>
+<h2 id="开始使用Docker版MySQL"><a href="#开始使用Docker版MySQL" class="headerlink" title="开始使用Docker版MySQL"></a>开始使用Docker版MySQL</h2><p>现在，您已经成功地使用Docker安装和启动了MySQL容器。您可以使用常规的MySQL命令进行数据库管理，因为Docker版MySQL和普通版基本一样，例如，您可以使用以下命令创建一个新的数据库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE 数据库名</span><br></pre></td></tr></table></figure>
+<h2 id="DDL（数据定义语言）学习"><a href="#DDL（数据定义语言）学习" class="headerlink" title="DDL（数据定义语言）学习"></a>DDL（数据定义语言）学习</h2><p>当我们想要创建一个新的MySQL表时，我们需要使用DDL（数据定义语言）来定义表的结构。DDL包括创建表，修改表和删除表等操作。</p>
+<h3 id="创建库"><a href="#创建库" class="headerlink" title="创建库"></a>创建库</h3><h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><p>在MySQL中，可以使用<code>CREATE DATABASE</code>语句来创建一个新的数据库。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE database_name;</span><br></pre></td></tr></table></figure>
+<p>其中，database_name是要创建的数据库的名称。<br>例如，要创建一个名为mydatabase的新数据库，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE mydatabase;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，创建数据库的用户必须具有足够的权限。如果当前用户没有创建数据库的权限，可以使用以下查询来授权：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRANT CREATE ON *.* TO &#x27;user&#x27;@&#x27;localhost&#x27;;</span><br></pre></td></tr></table></figure>
+<p>这个查询将授予user用户在本地主机上创建数据库的权限。<br>在创建数据库后，可以使用USE语句来选择要使用的数据库。例如，要使用mydatabase数据库，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE mydatabase;</span><br></pre></td></tr></table></figure>
+<p>这个查询将选择mydatabase数据库，并将其设置为当前数据库。在选择数据库后，可以使用其他SQL语句来创建表、插入数据、查询数据等。</p>
+<h4 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h4><p>在MySQL中，数据库名必须遵循以下规则：<br>数据库名必须以字母开头，可以包含字母、数字和下划线。<br>数据库名不能超过64个字符。<br>数据库名区分大小写。<br>数据库名不能与MySQL保留关键字相同，例如SELECT、INSERT、UPDATE等。<br>需要注意的是，虽然MySQL允许使用特殊字符和空格作为数据库名，但这并不是一个好的做法，因为它可能会导致一些问题。为了避免这些问题，最好只使用字母、数字和下划线作为数据库名。<br>另外，建议在命名数据库时使用有意义的名称，以便更好地描述数据库的内容和用途。例如，如果数据库用于存储客户信息，可以将其命名为customers。这样做可以使数据库更易于管理和维护。</p>
+<h4 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h4><p>在MySQL中，字符集用于定义数据库中存储的字符集和排序规则。MySQL支持多种字符集，包括ASCII、UTF-8、GBK等。在创建数据库时，可以指定要使用的字符集。如果没有指定字符集，则使用默认字符集。<br>要查看MySQL中可用的字符集，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CHARACTER SET;</span><br></pre></td></tr></table></figure>
+<p>要查看当前数据库的字符集，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT @@character_set_database;</span><br></pre></td></tr></table></figure>
+<p>要创建一个使用特定字符集的数据库，可以在CREATE DATABASE语句中指定字符集。例如，要创建一个使用UTF-8字符集的数据库，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE mydatabase CHARACTER SET utf8;</span><br></pre></td></tr></table></figure>
+<h4 id="排序规则"><a href="#排序规则" class="headerlink" title="排序规则"></a>排序规则</h4><p>在MySQL中，排序规则用于定义字符串比较的方式。MySQL支持多种排序规则，包括二进制排序、不区分大小写排序、区分大小写排序等。在创建数据库时，可以指定要使用的排序规则。如果没有指定排序规则，则使用默认排序规则。<br>要查看MySQL中可用的排序规则，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW COLLATION;</span><br></pre></td></tr></table></figure>
+<p>使用以下命令查看当前数据库排序规则：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT @collation_database;</span><br></pre></td></tr></table></figure>
+<p>要创建一个使用特定排序规则的数据库，可以在CREATE DATABASE语句中指定排序规则。例如，要创建一个使用不区分大小写排序的数据库，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE mydatabase COLLATE utf8_general_ci;</span><br></pre></td></tr></table></figure>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><h4 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法"></a>基本语法</h4><p>在MySQL中，用于创建表的关键字是CREATE TABLE。使用CREATE TABLE语句可以创建一个新的表，并指定表的名称、列名、数据类型、约束等信息。<br>以下是一个简单的CREATE TABLE语句示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT,</span><br><span class="line">  name VARCHAR(50),</span><br><span class="line">  age INT</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这个语句将创建一个名为mytable的新表，包含三个列：id、name和age。其中，id和age列的数据类型为整数，name列的数据类型为可变长度的字符串。<br>在CREATE TABLE语句中，还可以指定列的约束，如主键、唯一性约束、非空约束等。例如，要在id列上定义主键约束，可以使用以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT PRIMARY KEY,</span><br><span class="line">  name VARCHAR(50),</span><br><span class="line">  age INT</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这个语句将在id列上定义主键约束，保证表中每行数据的唯一性。<br>除了列的约束外，还可以在CREATE TABLE语句中指定表的字符集、排序规则等信息。例如，要创建一个使用UTF-8字符集和不区分大小写排序的表，可以使用以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT,</span><br><span class="line">  name VARCHAR(50),</span><br><span class="line">  age INT</span><br><span class="line">) CHARACTER SET utf8 COLLATE utf8_general_ci;</span><br></pre></td></tr></table></figure>
+<p>这个语句将创建一个使用UTF-8字符集和不区分大小写排序的新表。<br>需要注意的是，在创建表时，应根据实际情况选择适当的数据类型、约束、字符集和排序规则，以确保表的正确性和性能。<br>同时也可以使用AUTO_INCREMENT关键字来创建自增列。自增列是一种特殊的列，它的值会自动递增，每次插入新行时都会自动分配一个新的值。<br>以下是一个使用AUTO_INCREMENT关键字创建自增列的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT AUTO_INCREMENT PRIMARY KEY,</span><br><span class="line">  name VARCHAR(50),</span><br><span class="line">  age INT</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这个语句将创建一个名为mytable的新表，包含三个列：id、name和age。其中，id列使用AUTO_INCREMENT关键字定义为自增列，并将其设置为主键。<br>在插入新行时，可以省略id列的值，MySQL会自动分配一个新的值。例如，要插入一行数据，可以使用以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO mytable (name, age) VALUES (&#x27;John&#x27;, 30);</span><br></pre></td></tr></table></figure>
+<p>这个语句将插入一行数据，id列的值会自动递增。<br>需要注意的是，自增列只能用于整数类型的列，且每个表只能有一个自增列。在创建表时，应根据实际情况选择是否需要使用自增列。如果表中的数据不需要自动递增的唯一标识符，可以不使用自增列。</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>在MySQL中，有多种数据类型可用于创建表中的列。以下是一些常用的MySQL数据类型：<br>INT或INTEGER：用于存储整数。<br>FLOAT或DOUBLE：用于存储浮点数。<br>DECIMAL：用于存储精确的小数。<br>VARCHAR：用于存储可变长度的字符串。<br>CHAR：用于存储固定长度的字符串。<br>TEXT：用于存储较长的文本数据。<br>DATE：用于存储日期。<br>TIME：用于存储时间。<br>DATETIME：用于存储日期和时间。<br>TIMESTAMP：用于存储时间戳。<br>BOOLEAN或BOOL：用于存储布尔值。<br>除了这些常用的数据类型外，MySQL还支持其他一些数据类型，如枚举、集合、二进制数据等。在创建表时，可以根据需要选择适当的数据类型。需要注意的是，不同的数据类型具有不同的存储要求和限制，因此应根据实际情况选择合适的数据类型。</p>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>在MySQL中，索引是一种用于加速数据检索的数据结构。索引可以提高查询效率，减少查询所需的时间和资源。MySQL支持多种类型的索引，包括B-tree索引、哈希索引、全文索引等。<br>以下是一些常用的MySQL索引:<br>PRIMARY KEY：用于定义表的主键，可以保证表中每行数据的唯一性。<br>UNIQUE：用于定义唯一性约束，可以保证列中的值唯一。<br>INDEX：用于创建普通索引，可以加速查询。<br>FULLTEXT：用于创建全文索引，可以加速全文检索。<br>在创建表时，可以在列上定义索引。例如，要在id列上创建主键索引，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT PRIMARY KEY,</span><br><span class="line">  name VARCHAR(50)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>要在name列上创建唯一性约束，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT,</span><br><span class="line">  name VARCHAR(50) UNIQUE</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>要在name列上创建普通索引，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT,</span><br><span class="line">  name VARCHAR(50),</span><br><span class="line">  INDEX name_index (name)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>要在content列上创建全文索引，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE mytable (</span><br><span class="line">  id INT,</span><br><span class="line">  content TEXT,</span><br><span class="line">  FULLTEXT content_index (content)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，索引可以提高查询效率，但也会增加数据插入、更新和删除的时间和资源消耗。因此，在创建索引时，应根据实际情况选择适当的索引类型和列。</p>
+<h4 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h4><p>如果我们想要修改现有的表结构，我们可以使用ALTER TABLE语句。以下是一些常见的ALTER TABLE操作：</p>
+<h4 id="添加列"><a href="#添加列" class="headerlink" title="添加列"></a>添加列</h4><p>要在表中添加新列，我们可以使用以下语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE users ADD COLUMN birthdate DATE;</span><br><span class="line">`````</span><br><span class="line">在上面的示例中，我们向“users”表中添加了一个名为“birthdate”的列。</span><br><span class="line">#### 修改列</span><br><span class="line">要修改现有列的定义，我们可以使用以下语法：</span><br><span class="line">````MYSQL</span><br><span class="line">ALTER TABLE users MODIFY COLUMN email VARCHAR(200);</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，我们将“users”表中的“email”列长度从100修改为200。<br>删除列<br>要删除表中的列，我们可以使用以下语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE users DROP COLUMN email;</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，我们从“users”表中删除了名为“email”的列。</p>
+<h4 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h4><p>如果我们想要删除表，我们可以使用以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE users;</span><br></pre></td></tr></table></figure>
+<p>在上面的示例中，我们删除了名为“users”的表。<br>总之，DDL是MySQL中重要的语言，用于定义和修改表结构。它使我们能够创建，修改和删除表，以及添加，修改和删除表中的列</p>
+<h2 id="DML-数据操纵语言-学习"><a href="#DML-数据操纵语言-学习" class="headerlink" title="DML(数据操纵语言)学习"></a>DML(数据操纵语言)学习</h2><p>当我们需要对MySQL数据库中的数据进行操作时，我们可以使用数据操作语言（DML）。DML包括SELECT、INSERT、UPDATE和DELETE语句。</p>
+<h3 id="SELECT语句"><a href="#SELECT语句" class="headerlink" title="SELECT语句"></a>SELECT语句</h3><p>SELECT语句用于从MySQL数据库中检索数据。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ... FROM table_name WHERE condition;</span><br></pre></td></tr></table></figure>
+
+<p>其中，column1, column2, …是要查询的列名，table_name是要查询的表名，condition是查询条件。</p>
+<p>例如，要查询customers表中的所有数据，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM customers;</span><br></pre></td></tr></table></figure>
+
+<p>WHERE用于指定查询条件。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ... FROM table_name WHERE condition;</span><br></pre></td></tr></table></figure>
+
+<p>其中，condition是查询条件。</p>
+<p>例如，要查询customers表中姓氏为Smith的客户，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM customers WHERE last_name = &#x27;Smith&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>ORDER BY用于按照指定的列对查询结果进行排序。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ... FROM table_name ORDER BY column1 [ASC|DESC];</span><br></pre></td></tr></table></figure>
+
+<p>其中，column1是要排序的列名，ASC表示升序排序，DESC表示降序排序。</p>
+<p>例如，要按照客户的姓氏对customers表进行升序排序，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM customers ORDER BY last_name ASC;</span><br></pre></td></tr></table></figure>
+
+<p>GROUP BY用于将查询结果按照指定的列进行分组，并对每个分组进行聚合计算。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ..., aggregate_function(column)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br><span class="line">GROUP BY column1, column2, ...;</span><br></pre></td></tr></table></figure>
+
+<p>其中，column1, column2, …是要分组的列名，aggregate_function(column)是要对每个分组进行的聚合计算，例如SUM(column)、AVG(column)、COUNT(column)等。</p>
+<p>例如，要按照客户的国家对orders表进行分组，并计算每个国家的订单总数，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT country, COUNT(*) as total_orders</span><br><span class="line">FROM orders</span><br><span class="line">GROUP BY country;</span><br></pre></td></tr></table></figure>
+
+<p>这个查询将orders表按照国家进行分组，并对每个分组计算订单总数。查询结果将包含每个国家的名称和订单总数。</p>
+<p>需要注意的是，GROUP BY语句必须放在WHERE语句之后，而聚合函数必须放在SELECT语句中。在分组时，只能使用SELECT语句中指定的列和聚合函数，而不能使用其他列。</p>
+<h3 id="INSERT语句"><a href="#INSERT语句" class="headerlink" title="INSERT语句"></a>INSERT语句</h3><p>INSERT INTO用于向数据库中插入新数据。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table_name (column1, column2, ...) VALUES (value1, value2, ...);</span><br></pre></td></tr></table></figure>
+
+<p>其中，table_name是要插入数据的表名，column1, column2, …是要插入数据的列名，value1, value2, …是要插入的数据值。</p>
+<p>例如，要向customers表中插入一条新的客户数据，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO customers (first_name, last_name, email) VALUES (&#x27;John&#x27;, &#x27;Doe&#x27;, &#x27;john.doe@example.com&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="UPDATE语句"><a href="#UPDATE语句" class="headerlink" title="UPDATE语句"></a>UPDATE语句</h3><p>UPDATE用于更新数据库中的数据。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;</span><br></pre></td></tr></table></figure>
+
+<p>其中，table_name是要更新数据的表名，column1 &#x3D; value1, column2 &#x3D; value2, …是要更新的列和值，condition是更新条件。</p>
+<p>例如，要将customers表中姓氏为Smith的客户的邮箱地址更新为<a href="mailto:&#110;&#101;&#x77;&#46;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#110;&#101;&#x77;&#46;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE customers SET email = &#x27;new.email@example.com&#x27; WHERE last_name = &#x27;Smith&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DELETE语句"><a href="#DELETE语句" class="headerlink" title="DELETE语句"></a>DELETE语句</h3><p>DELETE用于从数据库中删除数据。它的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table_name WHERE condition;</span><br></pre></td></tr></table></figure>
+
+<p>其中，table_name是要删除数据的表名，condition是删除条件。</p>
+<p>例如，要从customers表中删除姓氏为Doe的客户，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM customers WHERE last_name = &#x27;Doe&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="联表查询"><a href="#联表查询" class="headerlink" title="联表查询"></a>联表查询</h2><p>在MySQL中，JOIN操作是将两个或多个表中的数据组合在一起的一种方法。JOIN操作可以帮助我们从多个表中检索数据，并将它们组合在一起以便更好地分析和理解数据。</p>
+<p>MySQL中有四种不同类型的JOIN操作：LEFT JOIN、RIGHT JOIN、INNER JOIN和FULL JOIN。下面我们将逐一介绍它们的用法和区别。</p>
+<h3 id="INNER-JOIN"><a href="#INNER-JOIN" class="headerlink" title="INNER JOIN"></a>INNER JOIN</h3><p>INNER JOIN操作返回两个表中都存在的行。如果一个表中没有与另一个表中的行匹配的行，则不会返回任何数据。</p>
+<p>下面是一个INNER JOIN操作的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM table1</span><br><span class="line">INNER JOIN table2</span><br><span class="line">ON table1.id = table2.id;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们将table1和table2两个表连接起来。我们使用ON关键字指定了连接条件，即table1.id &#x3D; table2.id。这意味着我们将根据这个条件将两个表中的数据进行匹配。</p>
+<h3 id="LEFT-JOIN"><a href="#LEFT-JOIN" class="headerlink" title="LEFT JOIN"></a>LEFT JOIN</h3><p>LEFT JOIN操作返回左表中的所有行，以及右表中与左表中的行匹配的行。如果右表中没有与左表中的行匹配的行，则返回NULL值。</p>
+<p>下面是一个LEFT JOIN操作的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM table1</span><br><span class="line">LEFT JOIN table2</span><br><span class="line">ON table1.id = table2.id;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们将table1和table2两个表连接起来。我们使用ON关键字指定了连接条件，即table1.id&#x3D; table2.id。这意味着我们将根据这个条件将两个表中的数据进行匹配。</p>
+<h3 id="RIGHT-JOIN"><a href="#RIGHT-JOIN" class="headerlink" title="RIGHT JOIN"></a>RIGHT JOIN</h3><p>RIGHT JOIN操作与LEFT JOIN操作类似，但是它返回右表中的所有行，以及左表中与右表中的行匹配的行。如果左表中没有与右表中的行匹配的行，则返回NULL值。</p>
+<p>下面是一个RIGHT JOIN操作的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM table1</span><br><span class="line">RIGHT JOIN table2</span><br><span class="line">ON table1.id = table2.id;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们将table1和table2两个表连接起来。我们使用ON关键字指定了连接条件，table1.id&#x3D; table2.id。这意味着我们将根据这个条件将两个表中的数据进行匹配。</p>
+<h3 id="FULL-JOIN"><a href="#FULL-JOIN" class="headerlink" title="FULL JOIN"></a>FULL JOIN</h3><p>FULL JOIN操作返回两个表中的所有行。如果一个表中没有与另一个表中的行匹配的行，则返回NULL值。</p>
+<p>下面是一个FULL JOIN操作的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM table1</span><br><span class="line">FULL JOIN table2</span><br><span class="line">ON table1.id = table2.id;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们将table1和table2两个表连接起来。我们使用ON关键字指定了连接条件，table1.id &#x3D; table2.id。这意味着我们将根据这个条件将两个表中的数据进行匹配</p>
+<h2 id="MySQL中的子查询"><a href="#MySQL中的子查询" class="headerlink" title="MySQL中的子查询"></a>MySQL中的子查询</h2><p>在MySQL中，子查询是一种查询语句，它嵌套在另一个查询语句中。子查询可以帮助我们从一个表中检索数据，并将其用作另一个查询的条件。</p>
+<p>MySQL中的子查询可以嵌套多层，每个子查询都可以返回一个结果集，这个结果集可以用作另一个查询的条件。</p>
+<p>下面我们将逐一介绍MySQL中子查询的用法和示例。</p>
+<h3 id="子查询的基本语法"><a href="#子查询的基本语法" class="headerlink" title="子查询的基本语法"></a>子查询的基本语法</h3><p>子查询的基本语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table1</span><br><span class="line">WHERE column_name operator (SELECT column_name FROM table_name WHERE condition);</span><br></pre></td></tr></table></figure>
+
+<p>在这个语法中，我们使用了一个子查询，它嵌套在WHERE子句中。子查询返回一个结果集，这个结果集将用作WHERE子句中的条件。</p>
+<h2 id="子查询的示例"><a href="#子查询的示例" class="headerlink" title="子查询的示例"></a>子查询的示例</h2><p>下面是一个使用子查询的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM orders</span><br><span class="line">WHERE customer_id IN (SELECT customer_id FROM customers WHERE country = &#x27;USA&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们使用了一个子查询，它嵌套在WHERE子句中。子查询返回一个结果集，这个结果集包含了所有来自美国的客户的ID。这个结果集将用作WHERE子句中的条件，以过滤orders表中来自美国的客户的订单。</p>
+<h2 id="子查询的类型"><a href="#子查询的类型" class="headerlink" title="子查询的类型"></a>子查询的类型</h2><p>MySQL中有两种类型的子查询：标量子查询和表子查询。</p>
+<h3 id="标量子查询"><a href="#标量子查询" class="headerlink" title="标量子查询"></a>标量子查询</h3><p>标量子查询返回一个单一的值，这个值可以用作另一个查询的条件。</p>
+<p>下面是一个标量子查询的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &gt; (SELECT MAX(order_date) FROM orders);</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们使用了一个标量子查询，它返回了orders表中最近的订单日期。这个日期将用作WHERE子句中的条件，以过滤orders表中最近的订单。</p>
+<h3 id="表子查询"><a href="#表子查询" class="headerlink" title="表子查询"></a>表子查询</h3><p>表子查询返回一个结果集，这个结果集可以用作另一个查询的条件。</p>
+<p>下面是一个表子查询的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM orders</span><br><span class="line">WHERE customer_id IN (SELECT customer_id FROM customers WHERE country = &#x27;USA&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们使用了一个表子查询，它返回了所有来自美国的客户的ID。这个结果集将用作WHERE子句中的条件，以过滤orders表中来自美国的客户的订单。</p>
+<h2 id="MySQL常用函数"><a href="#MySQL常用函数" class="headerlink" title="MySQL常用函数"></a>MySQL常用函数</h2><p>MySQL是一种常用的关系型数据库管理系统，它提供了许多内置函数来处理和操作数据，包括字符串函数、日期和时间函数、数学函数和聚合函数。</p>
+<h3 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h3><h4 id="CONCAT"><a href="#CONCAT" class="headerlink" title="CONCAT"></a>CONCAT</h4><p>CONCAT函数用于将两个或多个字符串连接在一起。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONCAT(string1, string2, ...)</span><br></pre></td></tr></table></figure>
+
+<p>例如，要将名字和姓氏连接在一起，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT CONCAT(first_name, &#x27; &#x27;, last_name) AS full_name FROM customers;</span><br><span class="line">SUBSTRING</span><br></pre></td></tr></table></figure>
+
+<p>SUBSTRING函数用于从字符串中提取子字符串。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUBSTRING(string, start, length)</span><br></pre></td></tr></table></figure>
+
+<p>其中，string是要提取子字符串的字符串，start是子字符串的起始位置，length是子字符串的长度。</p>
+<p>例如，要从字符串中提取前5个字符，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT SUBSTRING(&#x27;Hello, world!&#x27;, 1, 5);</span><br><span class="line">REPLACE</span><br></pre></td></tr></table></figure>
+
+<p>REPLACE函数用于替换字符串中的子字符串。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(string, from_string, to_string)</span><br></pre></td></tr></table></figure>
+
+<p>其中，string是要替换子字符串的字符串，from_string是要替换的子字符串，to_string是要替换成的字符串。</p>
+<p>例如，要将字符串中的所有空格替换为下划线，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT REPLACE(&#x27;Hello, world!&#x27;, &#x27; &#x27;, &#x27;_&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期和时间函数"><a href="#日期和时间函数" class="headerlink" title="日期和时间函数"></a>日期和时间函数</h2><h3 id="NOW"><a href="#NOW" class="headerlink" title="NOW"></a>NOW</h3><p>NOW函数用于返回当前日期和时间。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NOW()</span><br></pre></td></tr></table></figure>
+
+<p>例如，要获取当前日期和时间，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT NOW();</span><br><span class="line">DATE_FORMAT</span><br></pre></td></tr></table></figure>
+
+<p>DATE_FORMAT函数用于将日期和时间格式化为指定的字符串。它的语法如下：</p>
+<h3 id="DATE-FORMAT"><a href="#DATE-FORMAT" class="headerlink" title="DATE_FORMAT"></a>DATE_FORMAT</h3><p>DATE_FORMAT函数用于将日期和时间格式化为指定的字符串。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DATE_FORMAT(date, format)</span><br></pre></td></tr></table></figure>
+
+<p>其中，date是要格式化的日期和时间，format是要格式化成的字符串。</p>
+<p>例如，要将日期格式化为年-月-日的形式，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATE_FORMAT(NOW(), &#x27;%Y-%m-%d&#x27;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h2><h3 id="ABS"><a href="#ABS" class="headerlink" title="ABS"></a>ABS</h3><p>ABS函数用于返回一个数的绝对值。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ABS(number)</span><br></pre></td></tr></table></figure>
+
+<p>例如，要获取-10的绝对值，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT ABS(-10);</span><br></pre></td></tr></table></figure>
+
+<h3 id="ROUND"><a href="#ROUND" class="headerlink" title="ROUND"></a>ROUND</h3><p>ROUND函数用于将一个数四舍五入到指定的小数位数。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROUND(number, decimals)</span><br></pre></td></tr></table></figure>
+
+<p>其中，number是要四舍五入的数，decimals是要保留的小数位数。</p>
+<p>例如，要将3.14159四舍五入到两位小数，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT ROUND(3.14159, 2);</span><br></pre></td></tr></table></figure>
+
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><h3 id="COUNT"><a href="#COUNT" class="headerlink" title="COUNT"></a>COUNT</h3><p>COUNT函数用于计算指定列中的行数。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COUNT(column)</span><br></pre></td></tr></table></figure>
+
+<p>例如，要计算customers表中的行数，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT COUNT(*) FROM customers;</span><br><span class="line">SUM</span><br></pre></td></tr></table></figure>
+<p>SUM函数用于计算指定列中的数值总和。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM(column)</span><br></pre></td></tr></table></figure>
+
+<p>例如，要计算orders表中的总销售额，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT SUM(total_amount) FROM orders;</span><br><span class="line">AVG</span><br></pre></td></tr></table></figure>
+<p>AVG函数用于计算指定列中的平均值。它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AVG(column)</span><br></pre></td></tr></table></figure>
+
+<p>例如，要计算orders表中的平均销售额，可以使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT AVG(total_amount) FROM orders;</span><br></pre></td></tr></table></figure>
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。<br/>万万物皆有裂痕，那是光进来的地方<br/>本文仅代表个人主观观点，并不一定是客观事实。不喜欢可以不看，不要恶语相向。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/15/">近况-2024/09/02</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/13/">Typecho插件开发实例及教程</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>请合理发言，网络不是法外之地，快来讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body waline'>
+      
+
+<div id="waline_container" class="waline_thread"><svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="https://www.mengze2.cn/categories/">分类</a><a href="https://www.mengze2.cn/tags/">标签</a><a href="https://www.mengze2.cn/archives">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a target="_blank" rel="noopener" href="https://github.com/MengZe2l/">开源主页</a><a target="_blank" rel="noopener" href="https://github.com/MengZe2l/Text-Encryption-and-Decryption-Tools">文本加解密</a><a target="_blank" rel="noopener" href="https://github.com/MengZe2l/MengZe2l.github.io">本站仓库</a><a target="_blank" rel="noopener" href="https://github.com/MengZe2l/Whois">Whois工具</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/links">友链</a><a href="/about/">关于我</a><a target="_blank" rel="noopener" href="https://mengze2mc.github.io">主页</a><a target="_blank" rel="noopener" href="https://astro.mengze2.cn">MC服务器</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/privacy-policy">免责声明</a><a href="/newspaper/">每日早报</a><a target="_blank" rel="noopener" href="https://chat.mengze2.cn">ChatGPT</a><a href="https://www.mengze2.cn/links/rss">朋友圈</a></div></div><div class="text"><p><a target="_blank" rel="noopener" href="https://www.vpsor.cn/activity/cloudsite?userCode=ph259af"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.topvps.top/common/images/sucai/h-gy-domain-860_87-2.png" alt="Description of the image" style="max-width:100%; height:auto;"></a><br/>本站由 <a href="/">MengZe2</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br/>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br/> <a href="https://www.mengze2.cn/links">友链申请</a>|<a href="https://www.mengze2.cn/privacy-policy">免责声明</a>|<a target="_blank" rel="noopener" href="https://qm.qq.com/q/e1z9jakY0g">广告合作</a>|<a href="https://www.mengze2.cn/25-2">关于我们</a>  <br/><script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> <span>总访问 <span id="busuanzi_value_site_pv" style="font-weight: bold;">113701</span> 次 | 本页访问 <span id="busuanzi_value_page_pv" style="font-weight: bold;">326</span> 次</span></br> <a target="_blank" rel="noopener" href="https://www.travellings.cn/go.html">开往下站</a> · <a target="_blank" rel="noopener" href="https://bokelu.suijiboke.gs/">博客录</a> · <a target="_blank" rel="noopener" href="https://www.blogwe.com/">BlogWe</a>·<a target="_blank" rel="noopener" href="https://www.boyouquan.com/planet-shuttle">博友圈</a>·<a target="_blank" rel="noopener" href="https://notbyai.fyi/">Not By AI</a><br/><img class="lazy" style="width:20px;height:20px;margin-bottom:-4px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://c.mknb.cc/i.png"><a href="https://nyaicp.us.kg/?id=20240088" target="_blank">喵呜 20240088 号</a>|<img class="lazy" style="width:20px;height:20px;margin-bottom:-4px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://icp.gov.moe/images/ico64.png"><a href="https://icp.gov.moe/?keyword=20248884" target="_blank">萌ICP备20248884号</a><br/><img class="lazy"  style="width:20px;height:20px;margin-bottom:-4px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://icp.gs/assets/images/icp.png"><a target="_blank" rel="noopener" href="https://icp.gs/?id=20245385" title="岸号:20245385号">岸号 20245385号</a>|<img class="lazy" style="width:20px;height:20px;margin-bottom:-4px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://style.wmou.com/images/guanma.png"><a target="_blank" rel="noopener" href="https://guan.ma/hao/2024000101/" title="官码2024000101号">官码 2024000101号</a><script defer src="https://umami.awaae001.top/random-string.js" data-website-id="d334eb3e-61d8-424a-b416-2e7f9f3350bd"></script></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Docker"><span class="toc-text">安装Docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%89%E5%8F%96MySQL%E9%95%9C%E5%83%8F"><span class="toc-text">拉取MySQL镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-text">启动容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5MySQL"><span class="toc-text">连接MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8Docker%E7%89%88MySQL"><span class="toc-text">开始使用Docker版MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL%EF%BC%88%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%EF%BC%89%E5%AD%A6%E4%B9%A0"><span class="toc-text">DDL（数据定义语言）学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%BA%93"><span class="toc-text">创建库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">基本语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E5%90%8D"><span class="toc-text">命名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="toc-text">字符集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="toc-text">排序规则</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8"><span class="toc-text">创建表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95-1"><span class="toc-text">基本语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-text">索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%A1%A8"><span class="toc-text">修改表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%88%97"><span class="toc-text">添加列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8"><span class="toc-text">删除表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML-%E6%95%B0%E6%8D%AE%E6%93%8D%E7%BA%B5%E8%AF%AD%E8%A8%80-%E5%AD%A6%E4%B9%A0"><span class="toc-text">DML(数据操纵语言)学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SELECT%E8%AF%AD%E5%8F%A5"><span class="toc-text">SELECT语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INSERT%E8%AF%AD%E5%8F%A5"><span class="toc-text">INSERT语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UPDATE%E8%AF%AD%E5%8F%A5"><span class="toc-text">UPDATE语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DELETE%E8%AF%AD%E5%8F%A5"><span class="toc-text">DELETE语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="toc-text">联表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INNER-JOIN"><span class="toc-text">INNER JOIN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LEFT-JOIN"><span class="toc-text">LEFT JOIN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIGHT-JOIN"><span class="toc-text">RIGHT JOIN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FULL-JOIN"><span class="toc-text">FULL JOIN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E4%B8%AD%E7%9A%84%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">MySQL中的子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">子查询的基本语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E7%A4%BA%E4%BE%8B"><span class="toc-text">子查询的示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">子查询的类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E9%87%8F%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">标量子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">表子查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">MySQL常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-text">字符串函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CONCAT"><span class="toc-text">CONCAT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NOW"><span class="toc-text">NOW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATE-FORMAT"><span class="toc-text">DATE_FORMAT</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%87%BD%E6%95%B0"><span class="toc-text">数学函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ABS"><span class="toc-text">ABS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ROUND"><span class="toc-text">ROUND</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-text">聚合函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#COUNT"><span class="toc-text">COUNT</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  import { init } from 'https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline.js';
+
+  const el = document.getElementById('waline_container');
+  util.viewportLazyload(el, load_waline, true);
+
+  function load_waline(){
+    if (!el) return;
+
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline.css');
+    utils.css('https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline-meta.css');
+
+    const path = el.getAttribute('comment_id') ?? decodeURI(window.location.pathname);
+    const waline = init(Object.assign({"js":"https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline.js","css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline.css","meta_css":"https://gcore.jsdelivr.net/npm/@waline/client@3.1.3/dist/waline-meta.css","serverURL":"https://waline.mengze2.cn/","commentCount":true,"pageview":true,"locale":{"placeholder":"你好好姐姐，留个评论呗~"},"reaction":true}, {
+      el: '#waline_container',
+      path: path,
+      
+    }));
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":"https://api.info.mengze2.cn/api/v1/?url={href}"},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功！`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
+<script>var posts=["post/1/","post/10/","post/11/","post/12/","post/13/","post/14/","post/15/","post/16/","post/17/","post/18/","post/19/","post/2/","post/3/","post/4/","post/6/","post/5/","post/8/","post/7/","post/9/","post/hello-world/"];function toRandomPost(){ var randomPath = posts[Math.floor(Math.random()*posts.length)]; var encodedPath = encodeURIComponent(randomPath); window.open('/' + encodedPath, "_self"); };</script>
